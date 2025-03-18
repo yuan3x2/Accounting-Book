@@ -5,7 +5,7 @@ from ttkbootstrap.widgets import DateEntry
 from tkinter import messagebox
 from datetime import datetime
 
-# 設定 SQLite 資料庫
+# 設定 SQLite 資料庫0
 conn = sqlite3.connect("expenses.db")
 cursor = conn.cursor()
 cursor.execute('''
@@ -26,11 +26,13 @@ exp = True
 def changetoexp():
     global exp
     exp = True
+    print(exp)
     load_expenses()
 
 def changetoinc():
     global exp
     exp = False
+    print(exp)
     load_expenses()
 
 
@@ -72,7 +74,15 @@ def add_expense():
 
     if name and amount and category and date:
         try:
-            amount = float(amount)  
+            amount = float(amount) 
+            # 檢查是否為正數
+            if amount < 0:  
+                messagebox.showerror("輸入錯誤", "金額不可為小於 0 的負數")
+                return
+            # 檢查小數點後不超過兩位數
+            if len(amount_str := str(amount).split(".")[-1]) > 2:
+                messagebox.showerror("輸入錯誤", "金額最多只能有兩位小數")
+                return
             cursor.execute("INSERT INTO expenses (name, amount, category, type, date) VALUES (?, ?, ?, ?, ?)", 
                            (name, amount, category, exp_type, date))
             conn.commit()
@@ -173,7 +183,7 @@ entry_category.grid(row=2, column=1, padx=5, pady=5)
 
 ttk.Label(frame, text="類型:").grid(row=3, column=0, padx=5, pady=5)
 type_var = ttk.StringVar(value="支出")
-type_dropdown = ttk.Combobox(frame, textvariable=type_var, values=["收入", "支出"], state="readonly")
+type_dropdown = ttk.Combobox(frame, textvariable=type_var, values=["收入", "支出"])
 type_dropdown.grid(row=3, column=1, padx=5, pady=5)
 
 ttk.Label(frame, text="日期:").grid(row=4, column=0, padx=5, pady=5)
