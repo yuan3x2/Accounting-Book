@@ -26,13 +26,11 @@ exp = True
 def changetoexp():
     global exp
     exp = True
-    print(exp)
     load_expenses()
 
 def changetoinc():
     global exp
     exp = False
-    print(exp)
     load_expenses()
 
 
@@ -175,7 +173,7 @@ entry_category.grid(row=2, column=1, padx=5, pady=5)
 
 ttk.Label(frame, text="類型:").grid(row=3, column=0, padx=5, pady=5)
 type_var = ttk.StringVar(value="支出")
-type_dropdown = ttk.Combobox(frame, textvariable=type_var, values=["收入", "支出"])
+type_dropdown = ttk.Combobox(frame, textvariable=type_var, values=["收入", "支出"], state="readonly")
 type_dropdown.grid(row=3, column=1, padx=5, pady=5)
 
 ttk.Label(frame, text="日期:").grid(row=4, column=0, padx=5, pady=5)
