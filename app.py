@@ -23,18 +23,14 @@ conn.commit()
 
 exp = True
 
-
 def changetoexp():
     global exp
     exp = True
-    print(exp)
     load_expenses()
-
 
 def changetoinc():
     global exp
     exp = False
-    print(exp)
     load_expenses()
 
 
@@ -58,20 +54,15 @@ def load_expenses():
             if exp_type == "收入":
                 total_income += amount
                 if not exp:
-                    tree.insert("", "end", values=(
-                        name, f"${amount:.2f}", category, exp_type, date), tags=("income",))
+                    tree.insert("", "end", values=(name, f"${amount:.2f}", category, exp_type, date), tags=("income",))
             else:
                 total_expense += amount
                 if exp:
-                    tree.insert("", "end", values=(
-                        name, f"${amount:.2f}", category, exp_type, date), tags=("expense",))
+                    tree.insert("", "end", values=(name, f"${amount:.2f}", category, exp_type, date), tags=("expense",))
 
-    balance_label.config(
-        text=f"💰 總收入: ${total_income:.2f}   💸 總支出: ${total_expense:.2f}   📊 結餘: ${total_income - total_expense:.2f}")
+    balance_label.config(text=f"💰 總收入: ${total_income:.2f}   💸 總支出: ${total_expense:.2f}   📊 結餘: ${total_income - total_expense:.2f}")
 
 # 新增記帳紀錄
-
-
 def add_expense():
     name = entry_name.get()
     amount = entry_amount.get()
@@ -103,8 +94,6 @@ def add_expense():
         messagebox.showerror("輸入錯誤", "請填寫所有欄位")
 
 # 刪除選中的記帳紀錄
-
-
 def delete_expense():
     selected_item = tree.selection()
     if selected_item:
