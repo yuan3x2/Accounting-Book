@@ -60,7 +60,7 @@ def load_expenses():
                 if exp:
                     tree.insert("", "end", values=(name, f"${amount:.2f}", category, exp_type, date), tags=("expense",))
 
-    balance_label.config(text=f"💰 總收入: ${total_income:.2f}   💸 總支出: ${total_expense:.2f}   📊 結餘: ${total_income - total_expense:.2f}") 
+    balance_label.config(text=f"💰 總收入: ${total_income:.2f}   💸 總支出: ${total_expense:.2f}   📊 結餘: ${total_income - total_expense:.2f}")
 
 # 新增記帳紀錄
 def add_expense():
@@ -73,6 +73,14 @@ def add_expense():
     if name and amount and category and date:
         try:
             amount = float(amount)  
+            # 檢查是否為正數
+            if amount < 0:
+                messagebox.showerror("輸入錯誤", "金額不可為小於 0 的負數")
+                return
+            # 檢查小數點後不超過兩位數
+            if len(amount_str := str(amount).split(".")[-1]) > 2:
+                messagebox.showerror("輸入錯誤", "金額最多只能有兩位小數")
+                return
             cursor.execute("INSERT INTO expenses (name, amount, category, type, date) VALUES (?, ?, ?, ?, ?)", 
                            (name, amount, category, exp_type, date))
             conn.commit()
